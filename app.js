@@ -3,6 +3,9 @@ import createError from "http-errors";
 import logger from "morgan";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
+import mongoose from 'mongoose';
+
+mongoose.connect(process.env.DATABASE_URL);
 
 const app = express();
 
