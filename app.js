@@ -1,21 +1,19 @@
-import express from "express";
-import createError from "http-errors";
-import logger from "morgan";
-import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/users.js";
+import express from 'express';
+import createError from 'http-errors';
+import logger from 'morgan';
+import usersRouter from './src/routes/users.js';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
 const app = express();
 
-mongoose.connect(process.env.DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL, { dbName: process.env.DB_NAME });
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -26,7 +24,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // Send the error status
   res.status(err.status || 500);
