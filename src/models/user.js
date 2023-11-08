@@ -22,7 +22,7 @@ const userSchema = new Schema({
     lowercase: true,
     validate: {
       validator: (value) => validator.isEmail(value),
-      message: 'Invalid email address'
+      message: 'L\'email est invalide'
     }
   },
   password: {
@@ -30,7 +30,7 @@ const userSchema = new Schema({
     required: true,
     validate: {
       validator: (value) => validator.isStrongPassword(value),
-      message: 'Password is not strong enough'
+      message: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial'
     }
   },
   authTokens: [{
@@ -41,6 +41,7 @@ const userSchema = new Schema({
   }]
 });
 
+// Supprimer les informations sensibles de l'utilisateur
 userSchema.methods.toJSON = function () {
   const user = this.toObject();
   delete user.password;
@@ -48,6 +49,7 @@ userSchema.methods.toJSON = function () {
   return user;
 };
 
+// Générer un token d'authentification et sauvegarder l'utilisateur
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {
   const authToken = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET);
   this.authTokens.push({ authToken });
@@ -55,14 +57,16 @@ userSchema.methods.generateAuthTokenAndSaveUser = async function () {
   return authToken;
 };
 
+// Trouver un utilisateur par son email et son mot de passe
 userSchema.statics.findUser = async function (email, password) {
   const user = await User.findOne({ email });
-  if (!user) throw new Error('Unable to login');
+  if (!user) throw new Error('Informations de connexion invalides');
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) throw new Error('Unable to login');
+  if (!isPasswordValid) throw new Error('Informations de connexion invalides');
   return user;
 };
 
+// Trouver un utilisateur par son token d'authentification
 userSchema.pre('save', async function () {
   if (this.isModified('password')) this.password = await bcrypt.hash(this.password, 8);
 });

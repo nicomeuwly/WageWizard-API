@@ -2,6 +2,7 @@ import express from 'express';
 import createError from 'http-errors';
 import logger from 'morgan';
 import usersRouter from './src/routes/users.js';
+import salariesRouter from './src/routes/salaries.js';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/users', usersRouter);
+app.use('/salaries', salariesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
