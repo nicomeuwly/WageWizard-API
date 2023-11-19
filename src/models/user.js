@@ -66,7 +66,7 @@ userSchema.statics.findUser = async function (email, password) {
   return user;
 };
 
-// Trouver un utilisateur par son token d'authentification
+// Hash le mot de passe avant de le sauvegarder
 userSchema.pre('save', async function () {
   if (this.isModified('password')) this.password = await bcrypt.hash(this.password, 8);
 });
