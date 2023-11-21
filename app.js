@@ -8,7 +8,12 @@ import 'dotenv/config';
 
 const app = express();
 
-mongoose.connect(process.env.DATABASE_URL, { dbName: process.env.DB_NAME });
+mongoose.connect(process.env.DATABASE_URL, { dbName: process.env.DB_NAME }, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
 
 app.use(logger('dev'));
 app.use(express.json());
