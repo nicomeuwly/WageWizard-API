@@ -6,9 +6,10 @@ const salaryConfig = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
+        unique: true
     },
-    hourlyWage: {
+    wage: {
         type: Number,
         required: true,
         min: 1
@@ -16,7 +17,7 @@ const salaryConfig = new Schema({
     rateType: {
         type: String,
         required: true,
-        enum: ["horaire", "brut", "net"]
+        enum: ["Horaire", "Brut"]
     }
 });
 
