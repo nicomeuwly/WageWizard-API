@@ -11,7 +11,7 @@ router.post('/logout', authentification, authController.logout);
 router.post('/logout/all', authentification, authController.logoutAll);
 
 // Routes d'utilisateur
-router.post('/', userController.createUser);
+router.post('/register', userController.createUser);
 router.get('/me', authentification, userController.getMe);
 router.patch('/me', authentification, userController.updateUser);
 router.delete('/me', authentification, userController.deleteUser);
